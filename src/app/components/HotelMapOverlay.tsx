@@ -9,12 +9,16 @@ import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png'
 import markerIcon from 'leaflet/dist/images/marker-icon.png'
 import markerShadow from 'leaflet/dist/images/marker-shadow.png'
 
-delete (L.Icon.Default.prototype as any)._getIconUrl
+// Patch Leaflet's default icon URLs
+interface PatchedIcon extends L.Icon.Default {
+  _getIconUrl?: () => void;
+}
+delete (L.Icon.Default.prototype as PatchedIcon)._getIconUrl;
 L.Icon.Default.mergeOptions({
   iconRetinaUrl: markerIcon2x.src,
   iconUrl: markerIcon.src,
   shadowUrl: markerShadow.src,
-})
+});
 
 const overlayVariants = {
   hidden: { y: '100%', opacity: 0 },
@@ -23,7 +27,7 @@ const overlayVariants = {
 }
 
 type Hotel = {
-  id: string
+  id: number
   lat: number
   lng: number
   price: number

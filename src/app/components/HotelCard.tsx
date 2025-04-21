@@ -1,8 +1,9 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
-import Slider from 'react-slick';
+import Slider, { CustomArrowProps } from 'react-slick';
 import { ChevronLeft, ChevronRight, Heart } from 'lucide-react';
 import { motion } from 'framer-motion';
 
@@ -16,30 +17,32 @@ type HotelCardProps = {
     images: string[];
     rating: number;
     reviews: number;
-    guest_count: number,
-    room_count: number,
-    bathroom_count: number,
-    balcony: boolean,
-    size: number,
-    wifi: boolean,
-    pool: boolean,
-    parking: boolean,
-    airConditioning: boolean,
+    guest_count: number;
+    room_count: number;
+    bathroom_count: number;
+    balcony: boolean;
+    size: number;
+    wifi: boolean;
+    pool: boolean;
+    parking: boolean;
+    airConditioning: boolean;
   };
 };
 
-const ArrowLeft = ({ onClick }: any) => (
+const ArrowLeft = ({ onClick }: CustomArrowProps) => (
   <button
     onClick={onClick}
+    aria-label="Previous image"
     className="absolute left-2 top-1/2 transform -translate-y-1/2 z-10 bg-white/70 p-1 rounded-full shadow hover:bg-white"
   >
     <ChevronLeft className="w-5 h-5 text-black" />
   </button>
 );
 
-const ArrowRight = ({ onClick }: any) => (
+const ArrowRight = ({ onClick }: CustomArrowProps) => (
   <button
     onClick={onClick}
+    aria-label="Next image"
     className="absolute right-2 top-1/2 transform -translate-y-1/2 z-10 bg-white/70 p-1 rounded-full shadow hover:bg-white"
   >
     <ChevronRight className="w-5 h-5 text-black" />
@@ -50,7 +53,7 @@ const HotelCard: React.FC<HotelCardProps> = ({ hotel }) => {
   const [liked, setLiked] = useState(false);
 
   const settings = {
-    dots: false, // dots removed
+    dots: false,
     infinite: true,
     speed: 500,
     slidesToShow: 1,
@@ -66,6 +69,7 @@ const HotelCard: React.FC<HotelCardProps> = ({ hotel }) => {
           {/* Heart Button */}
           <div className="absolute top-3 right-3 z-20">
             <button
+              aria-label="Like this hotel"
               className="backdrop-blur-sm rounded-full p-2 transition shadow-md"
               onClick={(e) => {
                 e.stopPropagation();
@@ -91,18 +95,20 @@ const HotelCard: React.FC<HotelCardProps> = ({ hotel }) => {
 
           <Slider {...settings}>
             {hotel.images.map((img, index) => (
-              <div key={index}>
-                <img
-                  src={img}
-                  alt={`${hotel.hotel_name} - image ${index + 1}`}
-                  className="w-full h-64 object-cover"
-                />
+              <div key={img || index}>
+               <Image
+  src={img}
+  alt={`${hotel.hotel_name || 'Hotel'} - image ${index + 1}`}
+  width={500}
+  height={256}
+  className="w-full h-64 object-cover"
+/>
               </div>
             ))}
           </Slider>
         </div>
 
-        {/* Info Block - wrapped in Link */}
+        {/* Info Block */}
         <Link href={`/hotel/${hotel.id}?id=${hotel.id}`}>
           <div>
             <div className="p-3 mt-1">

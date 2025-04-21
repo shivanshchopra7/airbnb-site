@@ -73,10 +73,11 @@ export default function CategoryFilterBar() {
     scrollRef.current?.scrollBy({ left: 200, behavior: 'smooth' });
   };
 
-  const handleIncrement = (setter: any, value: number) => () => setter(value + 1);
-  const handleDecrement = (setter: any, value: number) => () => {
-    if (value > 0) setter(value - 1);
-  };
+  const handleIncrement = (setter: React.Dispatch<React.SetStateAction<number>>, value: number) => () => setter(value + 1);
+const handleDecrement = (setter: React.Dispatch<React.SetStateAction<number>>, value: number) => () => {
+  if (value > 0) setter(value - 1);
+};
+
 
   return (
     <>

@@ -1,4 +1,3 @@
-// page.tsx or wherever you're using the map
 'use client'
 
 import dynamic from 'next/dynamic'
@@ -13,8 +12,11 @@ const HotelMapOverlay = dynamic(() => import('@/app/components/HotelMapOverlay')
   ssr: false,
 })
 
+// Infer hotel type from mock data
+type Hotel = typeof mockHotels[number];
+
 export default function Home() {
-  const [hotels, setHotels] = useState([])
+  const [hotels, setHotels] = useState<Hotel[]>([])
   const [loading, setLoading] = useState(true)
   const [showMap, setShowMap] = useState(false)
 

@@ -1,4 +1,4 @@
-import CategoryFilterBar from './components/CategoryFilterBar';
+
 import './globals.css';
 import Navbar from '@/app/components/Navbar';
 
