@@ -9,6 +9,10 @@ import { format } from 'date-fns';
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 import { motion, AnimatePresence } from 'framer-motion';
+import { Range } from 'react-date-range';
+
+// Extend the type to allow undefined
+type CustomRange = Range;
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -21,17 +25,18 @@ export default function Navbar() {
   const [location, setLocation] = useState('');
   const [guests, setGuests] = useState<number | null>(null);
   const [searchValue, setSearchValue] = useState('');
-  const [dateRange, setDateRange] = useState([
+
+  const [dateRange, setDateRange] = useState<CustomRange[]>([
     {
-      startDate: null,
-      endDate: null,
+      startDate: undefined,
+      endDate: undefined,
       key: 'selection',
     },
   ]);
 
-  const locationRef = useRef(null);
-  const dateRef = useRef(null);
-  const guestRef = useRef(null);
+  const locationRef = useRef<HTMLDivElement | null>(null);
+  const dateRef = useRef<HTMLDivElement | null>(null);
+  const guestRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -71,7 +76,7 @@ export default function Navbar() {
           boxShadow: isScrolled ? '0 2px 6px rgba(0,0,0,0.1)' : '0 1px 3px rgba(0,0,0,0.05)',
         }}
         transition={{ duration: 0.3 }}
-        className={`fixed top-0 w-full bg-white z-50 px-6  flex  justify-between items-center border-b`}
+        className={`fixed top-0 w-full bg-white z-50 px-6 flex justify-between items-center border-b`}
       >
         {/* Left: Logo */}
         <div className="flex mx-10 items-center">
@@ -79,8 +84,7 @@ export default function Navbar() {
         </div>
 
         {/* Center: Tabs and Search */}
-        <div className="hidden md:flex flex-col  items-center justify-center space-y-2 relative w-full max-w-[850px]">
-          {/* Tabs */}
+        <div className="hidden md:flex flex-col items-center justify-center space-y-2 relative w-full max-w-[850px]">
           {!isScrolled && (
             <div className="flex space-x-4 pt-2 text-md font-medium text-gray-600">
               <span
@@ -102,7 +106,6 @@ export default function Navbar() {
             </div>
           )}
 
-          {/* Search Bars */}
           <AnimatePresence mode="wait">
             {!isScrolled ? (
               <motion.div
@@ -111,10 +114,9 @@ export default function Navbar() {
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.2 }}
-                className="flex items-center rounded-full border border-gray-300 shadow-sm bg-white w-full  h-[60px] relative overflow-hidden"
+                className="flex items-center rounded-full border border-gray-300 shadow-sm bg-white w-full h-[60px] relative overflow-hidden"
               >
-              <div className="grid grid-cols-4 divide-x divide-gray-300 flex-grow h-full">
-
+                <div className="grid grid-cols-4 divide-x divide-gray-300 flex-grow h-full">
                   {/* Where */}
                   <div
                     onClick={() => {
@@ -164,7 +166,7 @@ export default function Navbar() {
                               className="ml-2 text-gray-500 hover:text-black cursor-pointer"
                               onClick={(e) => {
                                 e.stopPropagation();
-                                setDateRange([{ ...dateRange[0], startDate: null }]);
+                                setDateRange([{ ...dateRange[0], startDate: undefined }]);
                               }}
                             />
                           </div>
@@ -192,7 +194,7 @@ export default function Navbar() {
                               className="ml-2 text-gray-500 hover:text-black cursor-pointer"
                               onClick={(e) => {
                                 e.stopPropagation();
-                                setDateRange([{ ...dateRange[0], endDate: null }]);
+                                setDateRange([{ ...dateRange[0], endDate: undefined }]);
                               }}
                             />
                           </div>
@@ -236,9 +238,8 @@ export default function Navbar() {
                   </div>
                 </div>
                 <button className="bg-[#FF385C] text-white w-10 h-10 flex items-center justify-center rounded-full mr-4 hover:bg-[#e03b56] transition">
-  <FaSearch size={14} />
-</button>
-
+                  <FaSearch size={14} />
+                </button>
               </motion.div>
             ) : (
               <motion.div
@@ -248,18 +249,16 @@ export default function Navbar() {
                 exit={{ opacity: 0, scale: 0.95 }}
                 transition={{ duration: 0.2 }}
                 className="rounded-full border border-gray-300 shadow-sm bg-white px-4 py-2 flex items-center space-x-3 cursor-pointer hover:shadow-md"
-                
               >
                 <span className="text-sm text-gray-600">Where to?</span>
-              
-                <button className="bg-[#FF385C] text-white w-8 h-8 flex items-center justify-center rounded-full  hover:bg-[#e03b56] transition">
-  <FaSearch size={14} />
-</button>
+                <button className="bg-[#FF385C] text-white w-8 h-8 flex items-center justify-center rounded-full hover:bg-[#e03b56] transition">
+                  <FaSearch size={14} />
+                </button>
               </motion.div>
             )}
           </AnimatePresence>
 
-          {/* Modals */}
+          {/* Location Modal */}
           {locationOpen && (
             <motion.div
               initial={{ opacity: 0, y: -10 }}
@@ -295,6 +294,7 @@ export default function Navbar() {
             </motion.div>
           )}
 
+          {/* Date Modal */}
           {dateOpen && (
             <motion.div
               initial={{ opacity: 0, y: -10 }}
@@ -310,12 +310,19 @@ export default function Navbar() {
                 editableDateInputs={true}
                 onChange={(item) => setDateRange([item.selection])}
                 moveRangeOnFirstSelection={false}
-                ranges={dateRange}
+                ranges={[
+                  {
+                    ...dateRange[0],
+                    startDate: dateRange[0].startDate || new Date(),
+                    endDate: dateRange[0].endDate || new Date(),
+                  },
+                ]}
                 minDate={new Date()}
               />
             </motion.div>
           )}
 
+          {/* Guest Modal */}
           {guestOpen && (
             <motion.div
               initial={{ opacity: 0, y: -10 }}

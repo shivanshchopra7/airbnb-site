@@ -5,7 +5,6 @@ import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
 import { motion, AnimatePresence } from 'framer-motion'
 
-// Fix Leaflet marker icons
 import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png'
 import markerIcon from 'leaflet/dist/images/marker-icon.png'
 import markerShadow from 'leaflet/dist/images/marker-shadow.png'
@@ -23,7 +22,19 @@ const overlayVariants = {
   exit: { y: '100%', opacity: 0 },
 }
 
-export default function HotelMapOverlay({ hotels, onClose }) {
+type Hotel = {
+  id: string
+  lat: number
+  lng: number
+  price: number
+}
+
+type HotelMapOverlayProps = {
+  hotels: Hotel[]
+  onClose: () => void
+}
+
+export default function HotelMapOverlay({ hotels, onClose }: HotelMapOverlayProps) {
   return (
     <AnimatePresence>
       <motion.div
@@ -34,7 +45,6 @@ export default function HotelMapOverlay({ hotels, onClose }) {
         transition={{ type: 'spring', stiffness: 80, damping: 18 }}
         variants={overlayVariants}
       >
-        {/* Close Button */}
         <div className="absolute top-5 right-5 z-[1000]">
           <button
             onClick={onClose}
@@ -44,7 +54,6 @@ export default function HotelMapOverlay({ hotels, onClose }) {
           </button>
         </div>
 
-        {/* Leaflet Map */}
         <MapContainer
           center={[31.1048, 77.1734]}
           zoom={7}
@@ -57,10 +66,7 @@ export default function HotelMapOverlay({ hotels, onClose }) {
           {hotels
             .filter((hotel) => hotel.lat && hotel.lng)
             .map((hotel) => (
-              <Marker
-                key={hotel.id}
-                position={[hotel.lat, hotel.lng]}
-              >
+              <Marker key={hotel.id} position={[hotel.lat, hotel.lng]}>
                 <Popup>₹{hotel.price.toLocaleString()}</Popup>
               </Marker>
             ))}
