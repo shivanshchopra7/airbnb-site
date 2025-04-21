@@ -4,6 +4,8 @@ export const mockHotels = [
     hotel_name: "Hotel Paris",
     description: "A luxurious stay in the heart of Paris.",
     location: "Paris, France",
+    latitude: 48.8566,
+    longitude: 2.3522,
     price: 120,
     images: [
       "https://plus.unsplash.com/premium_photo-1661964071015-d97428970584?q=80&w=1920&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -45,6 +47,8 @@ export const mockHotels = [
     hotel_name: "Hotel London",
     description: "A modern hotel in central London.",
     location: "London, UK",
+    latitude: 51.5074,
+    longitude: -0.1278,
     price: 100,
     images: [
       "https://images.unsplash.com/photo-1618773928121-c32242e63f39?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
@@ -79,6 +83,8 @@ export const mockHotels = [
     hotel_name: "Hotel New York",
     description: "Experience the luxury of New York City.",
     location: "New York, USA",
+    latitude: 40.7128,
+    longitude: -74.006,
     price: 150,
     images: [ "https://images.unsplash.com/photo-1618773928121-c32242e63f39?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
       "https://images.unsplash.com/photo-1517840901100-8179e982acb7?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
