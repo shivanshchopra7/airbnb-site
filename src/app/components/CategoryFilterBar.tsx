@@ -172,19 +172,22 @@ export default function CategoryFilterBar() {
                     ))}
                   </div>
                   <div className="px-1">
-                    <Slider
-                      range
-                      min={4300}
-                      max={140000}
-                      value={priceRange}
-                      onChange={setPriceRange}
-                      trackStyle={[{ backgroundColor: '#FF385C' }]}
-                      handleStyle={[
-                        { borderColor: '#FF385C', backgroundColor: '#fff' },
-                        { borderColor: '#FF385C', backgroundColor: '#fff' },
-                      ]}
-                      railStyle={{ backgroundColor: '#ddd' }}
-                    />
+                  <Slider
+  min={0}
+  max={140000}
+  value={priceRange}
+  onChange={(value) => {
+    if (Array.isArray(value)) {
+      setPriceRange(value)
+    }
+  }}
+  trackStyle={[{ backgroundColor: '#FF385C' }]}
+  handleStyle={[
+    { borderColor: '#FF385C', backgroundColor: '#fff' },
+    { borderColor: '#FF385C', backgroundColor: '#fff' }
+  ]}
+/>
+
                   </div>
                   <div className="flex justify-between text-sm text-gray-600 mt-2">
                     <span>₹{priceRange[0]}</span>
