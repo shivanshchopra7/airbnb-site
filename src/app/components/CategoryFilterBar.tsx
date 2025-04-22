@@ -92,7 +92,7 @@ export default function CategoryFilterBar() {
 
           <div
             ref={scrollRef}
-            className="flex overflow-x-auto scrollbar-none scrollbar-hide space-x-4 sm:space-x-6 flex-grow px-4 sm:px-10 scroll-smooth"
+            className="flex overflow-x-auto scrollbar-none scrollbar-hide space-x-4 sm:space-x-6 flex-grow md:px-4 sm:px-10 scroll-smooth"
           >
             {categories.map((category) => (
               <div
