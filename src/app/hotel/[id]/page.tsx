@@ -76,45 +76,46 @@ export default function HotelDetailsPage() {
       <h1 className="text-4xl font-bold text-black">{hotel.hotel_name}</h1>
       <p className="text-gray-600 text-md mt-1">{hotel.location}</p>
 
-      <div className="mt-4 grid grid-cols-1 md:grid-cols-4 grid-rows-2 gap-2 h-[400px] rounded-xl overflow-hidden">
-        <div className="col-span-2 row-span-2">
+      <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 grid-rows-2 md:h-[400px] gap-2 rounded-xl overflow-hidden">
+  <div className="sm:col-span-2 sm:row-span-2">
+    <Image
+      src={hotel.images[0]}
+      alt={`${hotel.hotel_name} main image`}
+      width={800}
+      height={600}
+      className="w-full h-full object-cover rounded-xl sm:rounded-l-xl cursor-pointer"
+      onClick={() => openModal(0)}
+    />
+  </div>
+  {hotel.images.slice(1, 5).map((img, index) => {
+    const actualIndex = index + 1;
+    const isLastVisible = index === 3 && hotel.images.length > 5;
+
+    return (
+      <div
+        key={index}
+        className="relative w-full h-[150px] sm:h-auto cursor-pointer"
+        onClick={() => openModal(actualIndex)}
+      >
         <Image
-  src={hotel.images[0]}
-  alt={`${hotel.hotel_name} main image`}
-  width={800}
-  height={600}
-  className="w-full h-full object-cover rounded-l-xl cursor-pointer"
-/>
-
-        </div>
-        {hotel.images.slice(1, 5).map((img, index) => {
-          const actualIndex = index + 1;
-          const isLastVisible = index === 3 && hotel.images.length > 5;
-
-          return (
-            <div
-              key={index}
-              className="relative w-full h-full cursor-pointer"
-              onClick={() => openModal(actualIndex)}
-            >
-              
-<Image
-  src={isLastVisible ? '/placeholder.jpg' : img}
-  alt={`${hotel.hotel_name} image ${actualIndex + 1}`}
-  width={400}
-  height={300}
-  className={`w-full h-full object-cover ${isLastVisible ? 'opacity-60' : ''}`}
-  style={{ objectFit: 'cover' }}
-/>
-              {isLastVisible && (
-                <div className="absolute inset-0 bg-black/50 flex items-center justify-center text-white font-semibold text-lg">
-                  + {hotel.images.length - 5} more
-                </div>
-              )}
-            </div>
-          );
-        })}
+          src={isLastVisible ? '/placeholder.jpg' : img}
+          alt={`${hotel.hotel_name} image ${actualIndex + 1}`}
+          width={400}
+          height={300}
+          className={`w-full h-full object-cover ${
+            isLastVisible ? 'opacity-60' : ''
+          }`}
+        />
+        {isLastVisible && (
+          <div className="absolute inset-0 bg-black/50 flex items-center justify-center text-white font-semibold text-lg">
+            + {hotel.images.length - 5} more
+          </div>
+        )}
       </div>
+    );
+  })}
+</div>
+
 
       <Modal
         isOpen={isModalOpen}
@@ -124,34 +125,35 @@ export default function HotelDetailsPage() {
         overlayClassName="fixed inset-0 bg-black/30 backdrop-blur-sm flex items-center justify-center z-50"
       >
         <button
-          className="absolute top-4 left-0 transform -translate-y-1/2 z-50 text-white bg-black/50 rounded-full px-3 py-1 hover:bg-black"
+          className="absolute md:top-4 md:left-0 transform -translate-y-1/2 z-50 text-white bg-black/50 rounded-full px-3 py-1 hover:bg-black"
           onClick={() => setIsModalOpen(false)}
         >
           ✕
         </button>
         <Slider
-          infinite
-          slidesToShow={1}
-          slidesToScroll={1}
-          initialSlide={selectedIndex}
-          arrows
-        >
-          {hotel.images.map((img, index) => (
-            <div key={index}>
-       <Image
-  src={img}
-  alt={`${hotel.hotel_name} zoomed image ${index + 1}`}
-  width={1200}
-  height={800}
-  className="w-full max-h-[80vh] px-8 object-contain rounded-xl"
-  style={{ objectFit: 'contain' }}
-/>
-            </div>
-          ))}
-        </Slider>
+  infinite
+  slidesToShow={1}
+  slidesToScroll={1}
+  initialSlide={selectedIndex}
+  arrows
+  className='mx-10 md:mx-0 items-center justify-center'
+>
+  {hotel.images.map((img, index) => (
+    <div key={index}>
+      <Image
+        src={img}
+        alt={`${hotel.hotel_name} zoomed image ${index + 1}`}
+        width={1200}
+        height={800}
+        className="w-full max-h-[75vh] sm:max-h-[80vh] px-2 sm:px-8 object-contain rounded-xl"
+      />
+    </div>
+  ))}
+</Slider>
+
       </Modal>
 
-      <div className="mt-8 flex flex-col md:flex-row gap-8">
+      <div className="md:mt-8 flex flex-col md:flex-row gap-8">
         <div className="md:w-2/3">
           <div className="flex flex-wrap items-center gap-6 text-gray-700 text-sm mt-4">
             <div className="flex items-center gap-1">

@@ -13,7 +13,6 @@ import { TbBuildingCottage } from 'react-icons/tb';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 
-
 const categories = [
   { label: 'Amazing views', icon: <GiMountainCave size={20} /> },
   { label: 'Icons', icon: <MdOutlineVilla size={20} /> },
@@ -74,14 +73,13 @@ export default function CategoryFilterBar() {
   };
 
   const handleIncrement = (setter: React.Dispatch<React.SetStateAction<number>>, value: number) => () => setter(value + 1);
-const handleDecrement = (setter: React.Dispatch<React.SetStateAction<number>>, value: number) => () => {
-  if (value > 0) setter(value - 1);
-};
-
+  const handleDecrement = (setter: React.Dispatch<React.SetStateAction<number>>, value: number) => () => {
+    if (value > 0) setter(value - 1);
+  };
 
   return (
     <>
-      <div className="w-full border-b bg-white px-4 sm:px-6 md:mt-12 mt-4 py-3 z-40">
+      <div className="w-full border-b bg-white md:mt-12 mt-10 py-2 sm:py-3 z-40">
         <div className="flex items-center justify-between max-w-screen-xl mx-auto relative">
           {canScrollLeft && (
             <button
@@ -94,7 +92,7 @@ const handleDecrement = (setter: React.Dispatch<React.SetStateAction<number>>, v
 
           <div
             ref={scrollRef}
-            className="flex overflow-x-auto scrollbar-none scrollbar-hide space-x-4 sm:space-x-6 flex-grow px-6 sm:px-10 scroll-smooth"
+            className="flex overflow-x-auto scrollbar-none scrollbar-hide space-x-4 sm:space-x-6 flex-grow px-4 sm:px-10 scroll-smooth"
           >
             {categories.map((category) => (
               <div
@@ -102,10 +100,10 @@ const handleDecrement = (setter: React.Dispatch<React.SetStateAction<number>>, v
                 onClick={() => setActive(category.label)}
                 className="flex flex-col items-center text-gray-500 hover:text-black cursor-pointer min-w-[60px] flex-shrink-0"
               >
-                <div className="mb-1">{category.icon}</div>
-                <span className="text-[10px] sm:text-[11px] text-center">{category.label}</span>
+                <div className="mb-0.5 sm:mb-1">{category.icon}</div>
+                <span className="text-[10px] sm:text-xs text-center leading-tight">{category.label}</span>
                 {active === category.label && (
-                  <div className="mt-1 h-[2px] w-5 rounded-full bg-black" />
+                  <div className="mt-[2px] h-[2px] w-4 sm:w-5 rounded-full bg-black" />
                 )}
               </div>
             ))}
@@ -122,7 +120,7 @@ const handleDecrement = (setter: React.Dispatch<React.SetStateAction<number>>, v
 
           <button
             onClick={() => setShowModal(true)}
-            className="ml-2 sm:ml-3 flex items-center space-x-1 sm:space-x-2 border border-gray-300 px-2 sm:px-3 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-medium text-gray-700 hover:shadow-sm"
+            className="ml-2 sm:ml-3 flex items-center space-x-1 sm:space-x-2 border border-gray-300 px-2 sm:px-3 py-1.5 sm:py-2 rounded-xl text-xs sm:text-sm font-medium text-gray-700 hover:shadow-sm whitespace-nowrap"
           >
             <FaFilter />
             <span>Filters</span>
@@ -150,7 +148,6 @@ const handleDecrement = (setter: React.Dispatch<React.SetStateAction<number>>, v
               <h2 className="text-lg font-semibold text-black text-center mb-4 border-b pb-2">Filters</h2>
 
               <div className="space-y-6">
-                {/* Type of Place */}
                 <div>
                   <div className="text-md font-medium mb-2 text-black ">Type of place</div>
                   <div className="flex gap-3 text-black">
@@ -160,7 +157,6 @@ const handleDecrement = (setter: React.Dispatch<React.SetStateAction<number>>, v
                   </div>
                 </div>
 
-                {/* Price Histogram */}
                 <div>
                   <div className="text-md font-medium mb-2 text-black">Price range</div>
                   <div className="w-full h-20 flex items-end gap-[1px] mb-4">
@@ -173,22 +169,21 @@ const handleDecrement = (setter: React.Dispatch<React.SetStateAction<number>>, v
                     ))}
                   </div>
                   <div className="px-1">
-                  <Slider
-  min={0}
-  max={140000}
-  value={priceRange}
-  onChange={(value) => {
-    if (Array.isArray(value)) {
-      setPriceRange(value)
-    }
-  }}
-  trackStyle={[{ backgroundColor: '#FF385C' }]}
-  handleStyle={[
-    { borderColor: '#FF385C', backgroundColor: '#fff' },
-    { borderColor: '#FF385C', backgroundColor: '#fff' }
-  ]}
-/>
-
+                    <Slider
+                      min={0}
+                      max={140000}
+                      value={priceRange}
+                      onChange={(value) => {
+                        if (Array.isArray(value)) {
+                          setPriceRange(value);
+                        }
+                      }}
+                      trackStyle={[{ backgroundColor: '#FF385C' }]}
+                      handleStyle={[
+                        { borderColor: '#FF385C', backgroundColor: '#fff' },
+                        { borderColor: '#FF385C', backgroundColor: '#fff' },
+                      ]}
+                    />
                   </div>
                   <div className="flex justify-between text-sm text-gray-600 mt-2">
                     <span>₹{priceRange[0]}</span>
@@ -196,11 +191,9 @@ const handleDecrement = (setter: React.Dispatch<React.SetStateAction<number>>, v
                   </div>
                 </div>
 
-                {/* Rooms & Beds */}
-                <div className='text-black'>
+                <div className="text-black">
                   <div className="text-sm font-medium mb-2">Rooms and beds</div>
-                  {[
-                    { label: 'Bedrooms', count: bedrooms, setter: setBedrooms },
+                  {[{ label: 'Bedrooms', count: bedrooms, setter: setBedrooms },
                     { label: 'Beds', count: beds, setter: setBeds },
                     { label: 'Bathrooms', count: bathrooms, setter: setBathrooms },
                   ].map(({ label, count, setter }) => (

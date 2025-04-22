@@ -33,6 +33,18 @@ export default function Navbar() {
       key: 'selection',
     },
   ]);
+  const [isMobile, setIsMobile] = useState(false);
+
+useEffect(() => {
+  const checkMobile = () => {
+    setIsMobile(window.innerWidth < 768); // Tailwind's md breakpoint is 768px
+  };
+
+  checkMobile();
+  window.addEventListener('resize', checkMobile);
+  return () => window.removeEventListener('resize', checkMobile);
+}, []);
+
 
   const locationRef = useRef<HTMLDivElement | null>(null);
   const dateRef = useRef<HTMLDivElement | null>(null);
@@ -67,19 +79,24 @@ export default function Navbar() {
 
   return (
     <>
-      <motion.nav
-        initial={false}
-        animate={{
+     <motion.nav
+  initial={false}
+  animate={
+    isMobile
+      ? {} // No animation changes for mobile
+      : {
           height: isScrolled ? 80 : 120,
           paddingTop: isScrolled ? 10 : 16,
           paddingBottom: isScrolled ? 10 : 16,
           boxShadow: isScrolled ? '0 2px 6px rgba(0,0,0,0.1)' : '0 1px 3px rgba(0,0,0,0.05)',
-        }}
-        transition={{ duration: 0.3 }}
-        className={`fixed top-0 w-full bg-white z-50 px-6 flex justify-between items-center border-b`}
-      >
+        }
+  }
+  transition={{ duration: 0.3 }}
+  className={`fixed top-0 w-full bg-white z-50 px-6 flex justify-between items-center border-b h-8 md:h-auto `}
+>
+
         {/* Left: Logo */}
-        <div className="flex mx-10 items-center">
+        <div className="flex md:mx-10 items-center">
           <Image src="/airbnblogo.png" alt="Airbnb Logo" width={105} height={40} priority className="object-contain" />
         </div>
 
